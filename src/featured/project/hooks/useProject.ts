@@ -1,0 +1,110 @@
+import { useContext, useMemo } from "react";
+import { ProjectContext } from "../contexts/ProjectContext";
+import { useSearch } from "../search/hooks/useSearch";
+
+export function useProject() {
+  const context = useContext(ProjectContext);
+  const { search } = useSearch();
+
+
+  if (!context) {
+    throw new Error("useSearch precisa estar dentro do SearchProvider");
+  }
+
+  const { projects } = context;
+  const totalProjects = projects.length;
+
+  const projectStatus = useMemo(() => {
+    let totalEnd: number = 0;
+    let totalPending: number = 0;
+    let totalRunning: number = 0;
+
+    projects.forEach((project) => {
+      if (project.status === "conclued") totalEnd++;
+      if (project.status === "running") totalRunning++;
+      if (project.status === "planning") totalPending++;
+    });
+
+    return [
+      {
+        name: "Concluído",
+        value: totalEnd,
+      },
+      {
+        name: "Em Andamento",
+        value: totalRunning,
+      },
+      {
+        name: "Planejamento",
+        value: totalPending,
+      },
+    ];
+  }, [projects]);
+
+  const projectPriority = useMemo(() => {
+    let totalHigh: number = 0;
+    let totalMedium: number = 0;
+    let totalLow: number = 0;
+
+    projects.forEach((project) => {
+      if (project.priority === "high") totalHigh++;
+      if (project.priority === "medium") totalMedium++;
+      if (project.priority === "low") totalLow++;
+    });
+
+    return [
+      {
+        name: "Alta",
+        value: totalHigh,
+      },
+      {
+        name: "Média",
+        value: totalMedium,
+      },
+      {
+        name: "Baixa",
+        value: totalLow,
+      },
+    ];
+  }, [projects]);
+
+  const filteredProjects = useMemo(() => {
+    if (!search) return null;
+
+    const filtered = projects.filter((project) => {
+      const projectName = project.name.toLocaleLowerCase().includes(search)
+        ? project.name.toLocaleLowerCase()
+        : "";
+
+      return projectName;
+    });
+
+    return filtered;
+  }, [projects, search]);
+
+  // const durationDays = useMemo(() => {
+  //   projects.filter((project) => {
+      // const createdAt = new Date(project.createdAt); 
+      // console.log(createdAt.getFullYear())
+      // const createdMili = Date.UTC(createdAt.getFullYear(), createdAt.getMonth(), createdAt.getDate())
+      // console.log(createdMili)
+      // const finishedAt = new Date(project.finishedAt);
+      // const finishedMili = Date.UTC(finishedAt.getFullYear(), finishedAt.getMonth(), finishedAt.getDate())
+      
+      // const resultDifference = (createdMili - finishedMili)
+
+      // const totalDays = Math.floor(resultDifference / (1000 * 60 * 60 * 24))
+      // console.log(totalDays)
+      // return totalDays;
+  //   })
+  // }, [projects]);
+  // console.log(durationDays)
+  return {
+    totalProjects,
+    projectStatus,
+    projectPriority,
+    filteredProjects,
+    // durationDays,
+    ...context,
+  };
+}
