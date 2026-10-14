@@ -1,6 +1,6 @@
-import Header from "../shared/components/header/Header";
-import Footer from "../shared/components/footer/Footer";
-import Sidebar from "../shared/components/sidebar/Sidebar";
+import Header from "../shared/components/header/components/Header";
+import Footer from "../shared/components/footer/components/Footer";
+import Sidebar from "../shared/components/sidebar/components/Sidebar";
 import AppRoutes from "./routes/AppRoutes";
 
 export default function App() {

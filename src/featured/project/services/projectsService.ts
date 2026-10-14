@@ -10,7 +10,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../../app/firebase/config";
 import type { Project } from "../types/project";
-import type { CreateProjectDTO, UpdtateProjectDTO } from "../types/dto";
+import type { CreateProjectDTO, UpdateProjectDTO } from "../types/dto";
 
 const COLLECTION = "projects";
 
@@ -37,6 +37,6 @@ export async function deleteProject(id: string) {
   await deleteDoc(doc(db, COLLECTION, id));
 }
 
-export async function updateProject(id: string, data: UpdtateProjectDTO) {
+export async function updateProject(id: string, data: UpdateProjectDTO) {
   await updateDoc(doc(db, COLLECTION, id), data);
 }

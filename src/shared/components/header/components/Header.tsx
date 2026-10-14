@@ -1,8 +1,8 @@
 import React from "react";
 //import styles from "./Header.module.css";
-import { usePage } from "../../../featured/page/hooks/usePage";
-import { useSearch } from "../../../featured/project/search/hooks/useSearch";
-import { useAuth } from "../../../featured/auth/hooks/useAuth";
+import { usePage } from "../../../../featured/page/hooks/usePage";
+import { useSearch } from "../../../../featured/project/search/hooks/useSearch";
+import { useAuth } from "../../../../featured/auth/hooks/useAuth";
 
 export default function Header() {
   const { titlePage } = usePage();

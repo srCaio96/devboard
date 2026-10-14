@@ -1,6 +1,6 @@
 import {type Technology } from "../types/technology";
 
-const technologies: Technology[] = [
+export const technologies: Technology[] = [
     { id: 'react', name: 'React', type: 'framework', area: 'frontend' },
     { id: 'nextjs', name: 'Next.js', type: 'framework', area: 'frontend' },
     { id: 'nodejs', name: 'Node.js', type: 'runtime', area: 'backend' },
@@ -63,10 +63,10 @@ export const groupedTechnologies = technologies.reduce((acc, tech) => {
     if (!acc[tech.area][tech.type]) {
         acc[tech.area][tech.type] = [];
     }
-    acc[tech.area][tech.type].push(tech);
-   
 
+    acc[tech.area][tech.type].push(tech);
+    
     return acc;
 }, {} as Record<string, Record<string, Technology[]>>);
 
-console.log(groupedTechnologies);
+

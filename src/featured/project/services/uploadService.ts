@@ -18,5 +18,11 @@ export async function uploadImage(file: File) {
 
     const data = await response.json();
 
+    console.log("Cloudinary response:", data);
+
+    if (!response.ok) {
+        throw new Error(data.error?.message || "Erro no upload");
+    }
+
     return data.secure_url;
 }

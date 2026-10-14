@@ -2,26 +2,27 @@ import React from "react";
 import { useProject } from "../../featured/project/hooks/useProject";
 import { useTable } from "../../featured/project/components/table/hooks/useTable";
 import { useMetrics } from "../../featured/project/metrics/hooks/useMetrics";
-
-import { formatDate } from "../../shared/utils/formatDate";
-
-import BasePieChart from "../../shared/components/charts/pie-chart/BasePieChart";
+import BasePieChart from "../../shared/components/charts/pie-chart/components/BasePieChart";
 import RenderPieSliceLabel from "../../shared/components/charts/pie-chart/components/RenderPieSliceLabel";
-import Table from "../../featured/project/components/table/Table";
+import Table from "../../featured/project/components/table/components/Table";
 
 //import styles from "./Projects.module.css";
 
 export default function Projects() {
-  const { filteredProjects, totalProjects } = useProject();
+  const { filteredProjects, totalProjects, projects } = useProject();
 
   const {
-    handleMode,
-    mode,
+    handleTableMode,
     handleChange,
     handleClick,
     handleSubmit,
-    editProject,
-    editTableIds,
+    mode,
+    countPriority,
+    countStatus,
+    editProject, 
+    handleClickDropdown, 
+    openId, 
+    editTableIds 
   } = useTable();
 
   const { statusMetrics, priorityMetrics } = useMetrics();
@@ -29,29 +30,18 @@ export default function Projects() {
   return (
     <section className="@container flex flex-col border-8">
       <article className="@container over-x-flow border-4">
-        <table className="table-auto border-collapse ">
-          <thead className="border">
-            <tr className="border">
-              <td className="border p-2">Nome do Projeto</td>
-              <td className="border p-2">Data</td>
-              <td className="border p-2">Estatus Projeto</td>
-              <td className="border p-2">% Completo</td>
-            </tr>
-          </thead>
-
-          <tbody>
-            {filteredProjects?.map((project) => (
-              <tr className="border-2" key={project.id}>
-                <td className="border p-2">{project.name ?? "N/A"}</td>
-                <td className="border p-2">
-                  {formatDate(project.createdAt) ?? "N/A"}
-                </td>
-                <td className="border p-2">{project.status ?? "N/A"}</td>
-                <td className="border p-2">{project.progress ?? "N/A"}%</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+            <Table
+              onChange={handleChange}
+              onClick={handleClick}
+              display='filter'
+              mode={mode}
+              countStatus={countStatus}
+              countPriority={countPriority}
+              projects={projects}
+              editTableIds={editTableIds}
+              handleClickDropdown={handleClickDropdown}
+              openId={openId}
+            />
       </article>
 
       <article className="flex flex-col justify-center border-4 m-5 max-w-full">
@@ -102,7 +92,7 @@ export default function Projects() {
         <div className="flex justify-around">
           <label htmlFor="">Tabela de Tarefas (Tabela)</label>
 
-          {mode === "edit" ? (
+          {mode === "edit"  ? (
             <>
               <form className="flex justify-around" onSubmit={handleSubmit}>
                 <button className="border px-5" type="submit">
@@ -112,13 +102,13 @@ export default function Projects() {
                 <button
                   type="button"
                   className="border px-5"
-                  onClick={() => handleMode("view")}
+                  onClick={() => handleTableMode("view")}
                 >
                   Cancelar
                 </button>
               </form>
             </>
-          ) : mode === "remove" ? (
+          ) : mode === "remove"  ? (
             <>
               <form className="flex justify-around" onSubmit={handleSubmit}>
                 <button type="submit" className="border px-5">
@@ -128,7 +118,7 @@ export default function Projects() {
                 <button
                   className="border px-5"
                   type="button"
-                  onClick={() => handleMode("view")}
+                  onClick={() => handleTableMode("view")}
                 >
                   Cancelar
                 </button>
@@ -139,14 +129,14 @@ export default function Projects() {
               <button
                 type="button"
                 className="border px-5"
-                onClick={() => handleMode("edit")}
+                onClick={() => handleTableMode("edit")}
               >
                 Editar
               </button>
               <button
                 type="button"
                 className="border px-5"
-                onClick={() => handleMode("remove")}
+                onClick={() => handleTableMode("remove")}
               >
                 Excluir
               </button>
@@ -154,34 +144,55 @@ export default function Projects() {
           )}
         </div>
 
-        {
           <Table
             onChange={handleChange}
             onClick={handleClick}
+            display='project'
             mode={mode}
-            editProject={editProject}
+            countStatus={countStatus}
+            countPriority={countPriority}
+            projects={editProject}
             editTableIds={editTableIds}
+            handleClickDropdown={handleClickDropdown}
+            openId={openId}
           />
-        }
       </article>
 
       <article className="@container flex flex-row flex-wrap justify-around border-4 m-5">
         <div className="flex flex-col border-2">
           <label htmlFor="">Status de Tarefas (Tabela)</label>
-          <table className="border">
-            <th>Status</th>
-            <th>Count</th>
-            <th>%</th>
-          </table>
+          
+            <Table
+              onChange={handleChange}
+              onClick={handleClick}
+              display='status'
+              mode={mode}
+              countStatus={countStatus}
+              countPriority={countPriority}
+              projects={projects}
+              editTableIds={editTableIds}
+              handleClickDropdown={handleClickDropdown}
+              openId={openId}
+            />
+          
         </div>
 
         <div className="flex flex-col border-2">
           <label htmlFor="">Prioridade de Tarefas (tabela)</label>
-          <table className="border">
-            <th>Prioridade</th>
-            <th>Count</th>
-            <th>%</th>
-          </table>
+          
+            <Table
+              onChange={handleChange}
+              onClick={handleClick}
+              display='priority'
+              mode={mode}
+              countStatus={countStatus}
+              countPriority={countPriority}
+              projects={projects}
+              editTableIds={editTableIds}
+              handleClickDropdown={handleClickDropdown}
+              openId={openId}
+            />
+          
         </div>
       </article>
     </section>

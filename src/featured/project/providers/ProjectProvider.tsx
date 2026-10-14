@@ -1,10 +1,12 @@
 import React, { useState, useEffect, type ReactNode } from "react";
 import { createProject, getProjects, updateProject, deleteProject } from "../services/projectsService";
+import { uploadImage } from "../services/uploadService.ts";
 import { useAuth } from "../../auth/hooks/useAuth.ts";
 import { ProjectContext } from "../contexts/ProjectContext.ts";
 import type { Project } from "../types/project.ts";
 import type { CreateProjectDTO, UpdateProjectDTO } from "../types/dto.ts";
-import { uploadImage } from "../services/uploadService.ts";
+import { calculateDurationDays } from "../utils/calculateDurationDays.ts";
+import { stages } from "../constants/stages.ts";
 
 export function ProjectProvider({ children }: { children: ReactNode }) {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -17,7 +19,7 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
         if (!user) {
           setProjects([]);
           return;
-        }
+        };
 
         const data = await getProjects(user.uid);
 
@@ -26,8 +28,8 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
         console.error(e);
       } finally {
         setLoading(false);
-      }
-    }
+      };
+    };
 
     fetchProjects();
   }, [user]);
@@ -35,25 +37,30 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
   async function addProject(project: CreateProjectDTO) {
     if (!user) {
       throw new Error("Usuário não autenticado");
-    }
+    };
 
     if (!project.logo) {
-      throw new Error("Logo obrigatória");
-    }
+      throw new Error("Logo do projeto não fornecida");
+    };
 
     setLoading(true);
 
     try {
-      const imageUrl = await uploadImage(project.logo);
-      // const stage: ProjectStageType = 'defination';
-      // const today = new Date().toISOString().split('T')[0]
+      const imageUrl = 
+        project.logo instanceof File ? 
+        await uploadImage(project.logo) : 
+        project.logo;
 
+      const duration = calculateDurationDays(
+        project.createdAt, project.finishedAt
+      );
+      
       const projectData = {
         ...project,
         logo: imageUrl,
         userId: user.uid,
-        duration: 0,
-        progress: 0
+        duration,
+        progress: stages.find(s => s.id === project.stage)?.progress ,
       };
 
       const docRef = await createProject(projectData);

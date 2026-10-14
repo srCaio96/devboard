@@ -1,10 +1,9 @@
 import { useState } from "react";
-
 import { useProject } from "../../../hooks/useProject";
-
 import type { Project } from "../../../types/project";
 
 export type TableMode = "view" | "edit" | "remove";
+export type TableDisplay = "project" | "status" | "priority" | "filter";
 
 export function useTable() {
   const { alterProject, removeProject, projects } = useProject();
@@ -13,13 +12,13 @@ export function useTable() {
   const [editProject, setEditProject] = useState<Project[]>([]);
   const [editTableIds, setEditTableIds] = useState(new Set<string>());
 
-  function handleMode(mode: "view" | "edit" | "remove") {
-    setMode(mode);
+  const countStatus = 0;
+  const countPriority = 0;
 
-    if (mode === "edit" || mode === "remove") {
-      setEditProject(projects);
-      setEditTableIds(new Set(""));
-    };
+  function handleTableMode(mode: TableMode) {
+    setMode(mode);
+    setEditProject(projects);
+    setEditTableIds(new Set(""));
   };
 
   function handleClick(id: string) {
@@ -36,6 +35,8 @@ export function useTable() {
     });
   };
 
+  
+
   function handleChange(e: React.ChangeEvent<HTMLInputElement>, id: string) {
     e.preventDefault();
 
@@ -49,6 +50,9 @@ export function useTable() {
           ? {
               ...project,
               [name]: value,
+              tech: project.tech.includes(value)
+                ? project.tech.filter((item) => item !== value)
+                : [...project.tech, value],
             }
           : project,
       ),
@@ -72,20 +76,20 @@ export function useTable() {
         if (!editTableIds.has(p.id)) continue;
         await removeProject(p.id);
       };
-
+      setEditProject(projects);
       setMode("view");
     };
-
-    setEditProject(projects);
   };
 
   return {
     mode,
-    handleMode,
+    countPriority,
+    countStatus,
+    editProject,
+    editTableIds,
+    handleTableMode,
     handleChange,
     handleSubmit,
     handleClick,
-    editProject,
-    editTableIds,
   };
 }

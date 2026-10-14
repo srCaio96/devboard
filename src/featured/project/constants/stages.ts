@@ -7,4 +7,7 @@ export const stages = [
     {id: 'testing', label: 'Testes', progress: 70},
     {id: 'documentation', label: 'Documentação', progress: 84},
     {id: 'deployment', label: 'Deploy', progress: 100} 
-] as const
+] as const;
+
+
+    

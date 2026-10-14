@@ -6,11 +6,11 @@ import {
   ResponsiveContainer,
   Label,
 } from "recharts";
-import CustomTooltip from "../common/CustomTooltip";
-import { useMetrics } from "../../../../featured/project/metrics/hooks/useMetrics";
-import CustomLegend from "../common/CustomLegend";
-import type { BasePieChartProps } from "./types/pieChart";
-import CustomPieSector from "./components/CustomPieSector";
+import CustomTooltip from "../../common/CustomTooltip";
+import { useMetrics } from "../../../../../featured/project/metrics/hooks/useMetrics";
+import CustomLegend from "../../common/CustomLegend";
+import type { BasePieChartProps } from "../types/pieChart";
+import CustomPieSector from "./CustomPieSector";
 
 export default function BasePieChart({
   cx,

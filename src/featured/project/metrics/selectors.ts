@@ -23,16 +23,19 @@ export function selectMetrics(projects: Project[]) {
 
   const statusMetrics: MetricItem[] = [
     {
+      id: "conclued",
       name: "Concluído",
       value: statusMap.conclued,
       color: "#008002",
     },
     {
+      id: "running",
       name: "Em Andamento",
       value: statusMap.running,
       color: "#3F8340",
     },
-    {
+    { 
+      id: "planning",
       name: "Planejamento",
       value: statusMap.planning,
       color: "#808080",
@@ -41,16 +44,19 @@ export function selectMetrics(projects: Project[]) {
 
   const priorityMetrics: MetricItem[] = [
     {
+      id: "high",
       name: "Alta",
       value: priorityMap.high,
       color: "#FF4500",
     },
     {
+      id: "medium",
       name: "Média",
       value: priorityMap.medium,
       color: "#FFA500",
     },
     {
+      id: "low",
       name: "Baixa",
       value: priorityMap.low,
       color: "#32CD32",

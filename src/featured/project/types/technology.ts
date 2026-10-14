@@ -1,4 +1,4 @@
-export type Technology = {
+export interface Technology {
   id: string;
   name: string;
   type: "language"

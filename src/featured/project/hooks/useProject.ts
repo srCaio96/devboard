@@ -1,11 +1,9 @@
 import { useContext, useMemo } from "react";
 import { ProjectContext } from "../contexts/ProjectContext";
 import { useSearch } from "../search/hooks/useSearch";
-
 export function useProject() {
   const context = useContext(ProjectContext);
   const { search } = useSearch();
-
 
   if (!context) {
     throw new Error("useSearch precisa estar dentro do SearchProvider");
@@ -82,29 +80,11 @@ export function useProject() {
     return filtered;
   }, [projects, search]);
 
-  // const durationDays = useMemo(() => {
-  //   projects.filter((project) => {
-      // const createdAt = new Date(project.createdAt); 
-      // console.log(createdAt.getFullYear())
-      // const createdMili = Date.UTC(createdAt.getFullYear(), createdAt.getMonth(), createdAt.getDate())
-      // console.log(createdMili)
-      // const finishedAt = new Date(project.finishedAt);
-      // const finishedMili = Date.UTC(finishedAt.getFullYear(), finishedAt.getMonth(), finishedAt.getDate())
-      
-      // const resultDifference = (createdMili - finishedMili)
-
-      // const totalDays = Math.floor(resultDifference / (1000 * 60 * 60 * 24))
-      // console.log(totalDays)
-      // return totalDays;
-  //   })
-  // }, [projects]);
-  // console.log(durationDays)
   return {
     totalProjects,
     projectStatus,
     projectPriority,
     filteredProjects,
-    // durationDays,
     ...context,
   };
 }

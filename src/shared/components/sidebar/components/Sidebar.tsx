@@ -1,8 +1,8 @@
 import React from "react";
 // import styles from "./Sidebar.module.css";
 import { Link } from "react-router";
-import { usePage } from "../../../featured/page/hooks/usePage";
-import { useSearch } from "../../../featured/project/search/hooks/useSearch";
+import { usePage } from "../../../../featured/page/hooks/usePage";
+import { useSearch } from "../../../../featured/project/search/hooks/useSearch";
 
 export default function Sidebar() {
   const { handleHeading } = usePage();

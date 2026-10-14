@@ -1,7 +1,4 @@
-export function formatDate(date: Date | string) {
-  return new Date(date).toLocaleDateString("pt-BR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "2-digit",
-  });
+export function formatDate(date: string) {
+  const [year, month, day] = date.split("-");
+  return `${day}/${month}/${year.slice(2)}`;
 };

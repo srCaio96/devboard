@@ -1,7 +1,7 @@
 import React from "react";
 // import styles from "./Dashboard.module.css";
-import Modal from "../../featured/project/components/modal/Modal";
-import BasePieChart from "../../shared/components/charts/pie-chart/BasePieChart";
+import Modal from "../../featured/project/components/modal/components/Modal";
+import BasePieChart from "../../shared/components/charts/pie-chart/components/BasePieChart";
 import { useModal } from "../../featured/project/components/modal/hooks/useModal";
 import RenderPieCenterLabel from "../../shared/components/charts/pie-chart/components/RenderPieCenterLabel";
 
@@ -9,22 +9,22 @@ import { useProject } from "../../featured/project/hooks/useProject";
 import { formatDate } from "../../shared/utils/formatDate";
 import { useMetrics } from "../../featured/project/metrics/hooks/useMetrics";
 
-import { technologies } from '../../featured/project/constants/technologies';
-
 export default function Home() {
   const {
-    handleOpen,
+    open, 
     handleClose,
-    open,
-    handleChange,
-    handleFile,
+    handleOpen,
     handleSubmit,
-    loading,
-    inputAble,
   } = useModal();
-  const { totalProjects, projectStatus, projects } = useProject();
-  const { statusMetrics } = useMetrics();
 
+  const { 
+    totalProjects, 
+    projectStatus, 
+    projects, 
+  } = useProject();
+
+  const { statusMetrics } = useMetrics();
+  console.log(open)
   return (
     <section className="@container bg-blue-700">
       <article className="@container flex flex-row flex-wrap justify-center">
@@ -45,12 +45,7 @@ export default function Home() {
         {open && (
           <Modal
             onClose={handleClose}
-            onChange={handleChange}
-            onFile={handleFile}
             onSubmit={handleSubmit}
-            loading={loading}
-            inputAble={inputAble}
-            technologies={technologies}
           />
         )}
       </article>

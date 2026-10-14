@@ -1,11 +1,11 @@
 import { useState } from "react";
 import type { CreateProjectDTO } from "../../../types/dto";
 import { useProject } from "../../../hooks/useProject";
+import defaultLogo from "../../../../../../assets/images/interrogation-dot.jpg";
+
 
 export function useModal() {
-
   const { addProject, loading } = useProject();
-
   const [open, setOpen] = useState<boolean>(false);
   const [inputAble, setInputAble] = useState<boolean>(true);
   const [form, setForm] = useState<CreateProjectDTO>({
@@ -18,62 +18,64 @@ export function useModal() {
     priority: "low",
     tech: [],
     client: "",
-    logo: null,
+    logo: defaultLogo,
   });
 
   function handleOpen() {
     setOpen(true);
-    // const date1 = Date.UTC(2026, 7, 28);
-    // const date2 = Date.UTC(2026, 7, 26);
-    // console.log(date1, date2)
-    // const resultDifference = date1 - date2;
-    // const totalDays = Math.floor(resultDifference / (1000 * 60 * 60 * 24));
-    // console.log(totalDays);
-  }
+  };
 
   function handleClose() {
     setOpen(false);
-    setForm({ ...form, logo: null });
-  }
+  };
 
+  console.log(open)
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) {
     const { name, value } = e.currentTarget;
-    console.log(name, value);
-
+    
     setForm((prev) => ({
       ...prev,
-
-      [name]: name === "tech" ? value.split(", ") : value
+      [name]: value,
     }));
-
+    
     if (name === 'status' && value === 'conclued') {
-      setInputAble(false);
-    } else {
       setInputAble(true);
+    } else {
+      setInputAble(false);
     };
   };
 
+  function handleTechChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { value } = e.currentTarget;
+    
+    setForm((prev) => ({
+      ...prev,
+      tech: prev.tech.includes(value)
+            ? prev.tech.filter(item => item !== value)
+            : [...prev.tech, value]
+    }));
+  };
+
   function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.currentTarget.files?.[0] || null;
+    const file = e.currentTarget.files?.[0];
 
     setForm((prev) => ({
       ...prev,
-      logo: file,
+      logo: file ?? defaultLogo,
     }));
-  }
-
+  };
+ 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
     await addProject(form);
-
     handleClose();
-  }
+  };
 
   return {
     handleChange,
+    handleTechChange,
     handleSubmit,
     handleFile,
     handleOpen,
@@ -83,4 +85,4 @@ export function useModal() {
     inputAble,
     form
   };
-}
+};
